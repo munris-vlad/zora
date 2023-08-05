@@ -11,6 +11,7 @@ const wallets = readWallets('wallets.txt')
 let totalPoints = 0;
 
 async function getMintfunPoints(wallet) {
+
     axios.get(apiUrl, {
         params: {
           address: wallet
@@ -24,7 +25,7 @@ async function getMintfunPoints(wallet) {
           writeLineToFile('results.txt', result);
       })
       .catch(function (error) {
-        console.log(error);
+          console.log(`${wallet}: ${error.response.data.message}`);
       })
 }
 
