@@ -1,0 +1,1 @@
+# mintfun-checker
