@@ -8,6 +8,8 @@ const apiUrl = "https://mint.fun/api/mintfun/fundrop/points";
 
 const wallets = readWallets('wallets.txt')
 
+let totalPoints = 0;
+
 async function getMintfunPoints(wallet) {
     axios.get(apiUrl, {
         params: {
@@ -15,16 +17,24 @@ async function getMintfunPoints(wallet) {
         }
       })
       .then(function (response) {
-        const result = `${wallet}: ${response.data.points}`;
-        console.log(result);
-        writeLineToFile('results.txt', result);
+          const points = response.data.points
+          const result = `${wallet}: ${points}`;
+          totalPoints += points;
+          console.log(result);
+          writeLineToFile('results.txt', result);
       })
       .catch(function (error) {
         console.log(error);
       })
 }
 
-for(let wallet of wallets) {
+let iterations = wallets.length;
+for (let wallet of wallets) {
     await getMintfunPoints(wallet);
     await sleep(1.5 * 1000);
+
+    if (!--iterations) {
+        console.log(`Total: ${totalPoints}`);
+        writeLineToFile('results.txt', `Total: ${totalPoints}`);
+    }
 }
