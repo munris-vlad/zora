@@ -5,7 +5,7 @@ import fs from "fs";
 
 const apiUrl = "https://mint.fun/api/mintfun/fundrop/pass";
 const mintCheckApiUrl = "https://mint.fun/api/mintfun/contract/";
-const submitTxApiUrl = "https://mint.fun/api/mintfun/submit-tx/";
+const submitTxApiUrl = "https://mint.fun/api/mintfun/submit-tx";
 
 export async function checkPass(address) {
     try {
