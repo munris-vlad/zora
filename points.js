@@ -4,29 +4,27 @@ import axios from "axios";
 
 fs.truncateSync('results.txt', 0);
 
-const apiUrl = "https://mint.fun/api/mintfun/fundrop/points";
+const apiUrl = "https://mint.fun/api/mintfun/fundrop/pass";
 
 const wallets = readWallets('wallets.txt')
 
 let totalPoints = 0;
 
 async function getMintfunPoints(wallet) {
-
     axios.get(apiUrl, {
         params: {
           address: wallet
         }
-      })
-      .then(function (response) {
-          const points = response.data.points
-          const result = `${wallet}: ${points}`;
-          totalPoints += points;
-          console.log(result);
-          writeLineToFile('results.txt', result);
-      })
-      .catch(function (error) {
-          console.log(`${wallet}: ${error.response.data.message}`);
-      })
+    }).then(function (response) {
+        totalPoints += response.data.points;
+        let points = response.data.points;
+        let streak = response.data.streak;
+        let line = `${wallet}: ${points} | Streak: ${streak}`;
+        console.log(line);
+        writeLineToFile('results.txt', line);
+    }).catch(function (error) {
+        console.log(`${wallet}: ${error.response.data.message}`);
+    });
 }
 
 let iterations = wallets.length;

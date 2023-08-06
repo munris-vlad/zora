@@ -20,6 +20,7 @@ export function readWallets(filePath) {
     }
 }
 
+
 export function writeLineToFile(filePath, line) {
     try {
         fs.appendFileSync(filePath, line + '\n', 'utf-8');
