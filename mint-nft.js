@@ -43,7 +43,6 @@ async function mint(wallet) {
                 const nonce = await provider.getTransactionCount(address);
                 const gasPrice = await provider.getGasPrice()
                 const maxPriority = parseInt(ethers.utils.formatUnits(gasPrice.toString(), "gwei"));
-
                 const tx = {
                     type: 2,
                     chainId: networkId,
@@ -51,10 +50,20 @@ async function mint(wallet) {
                     data: data,
                     nonce: nonce,
                     value: value.toString(),
-                    gasLimit: 120000,
-                    maxFeePerGas: ethers.utils.parseUnits(maxPriority.toString(), "gwei"),
-                    maxPriorityFeePerGas: ethers.utils.parseUnits("0.1", "gwei"),
                 };
+
+                switch (network) {
+                    case 'eth':
+                        tx.maxFeePerGas = ethers.utils.parseUnits(maxPriority.toString(), "gwei");
+                        tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.1", "gwei");
+                        tx.gasLimit = 120000;
+                        break;
+                    case 'optimism':
+                        tx.maxFeePerGas = ethers.utils.parseUnits("1", "gwei");
+                        tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.1", "gwei");
+                        tx.gasLimit = 500000;
+                        break;
+                }
 
                 const signedTx = await wallet.signTransaction(tx);
                 const txResponse = await provider.sendTransaction(signedTx);
