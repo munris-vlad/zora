@@ -78,7 +78,7 @@ async function mint(wallet) {
 
                 const signedTx = await wallet.signTransaction(tx);
                 const txResponse = await provider.sendTransaction(signedTx);
-                await submitTx(address, txResponse.hash);
+                await submitTx(address, txResponse.hash, networkId);
                 console.log(`${address}: ${nftContractAddress} успешно заминчен: ${ txResponse.hash }`);
                 await sleep(random(30, 38) * 1000);
             } catch (e) {
