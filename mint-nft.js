@@ -4,12 +4,11 @@ import axios from "axios";
 import * as ethers from "ethers";
 import {checkPass, isMinted, submitTx, waitForGas, getContractData} from "./common-mintfun.js";
 
-const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
-
 let contracts;
 const args = process.argv.slice(2);
 let network = 'eth';
 let networkId;
+let provider;
 
 if (args[0]) {
    network = args[0];
@@ -18,16 +17,18 @@ if (args[0]) {
 switch (network) {
     case 'eth':
         contracts = JSON.parse(fs.readFileSync("./contracts-eth.json"));
+        provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
         networkId = 1;
         break;
 
     case 'optimism':
         contracts = JSON.parse(fs.readFileSync("./contracts-optimism.json"));
+        provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/optimism");
         networkId = 10;
         break;
 }
 
-const maxGas = 20;
+const maxGas = 50;
 
 async function mint(wallet) {
     const address = await wallet.getAddress();
@@ -45,7 +46,7 @@ async function mint(wallet) {
 
                 const tx = {
                     type: 2,
-                    chainId: 1,
+                    chainId: networkId,
                     to: nftContractAddress,
                     data: data,
                     nonce: nonce,
