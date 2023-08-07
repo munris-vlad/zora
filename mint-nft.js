@@ -2,24 +2,43 @@ import { wait, sleep, random, readWallets, writeLineToFile } from './common.js';
 import fs from "fs";
 import axios from "axios";
 import * as ethers from "ethers";
-import {checkPass, isMinted, submitTx, waitForGas} from "./common-mintfun.js";
+import {checkPass, isMinted, submitTx, waitForGas, getContractData} from "./common-mintfun.js";
 
 const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
-const nftContractABI = JSON.parse(fs.readFileSync("./abi-nft-contract.json"));
-const contracts = JSON.parse(fs.readFileSync("./contracts.json"));
+
+let contracts;
+const args = process.argv.slice(2);
+let network = 'eth';
+let networkId;
+
+if (args[0]) {
+   network = args[0];
+}
+
+switch (network) {
+    case 'eth':
+        contracts = JSON.parse(fs.readFileSync("./contracts-eth.json"));
+        networkId = 1;
+        break;
+
+    case 'optimism':
+        contracts = JSON.parse(fs.readFileSync("./contracts-optimism.json"));
+        networkId = 10;
+        break;
+}
 
 const maxGas = 20;
 
 async function mint(wallet) {
     const address = await wallet.getAddress();
     for (const nftContractAddress in contracts) {
-        if (!await isMinted(address, nftContractAddress)) {
+        if (!await isMinted(address, networkId, nftContractAddress)) {
+            const nftContractABI = JSON.parse(fs.readFileSync(`./contracts/${nftContractAddress}.json`));
             const value = contracts[nftContractAddress];
             const nftContract = new ethers.Contract(nftContractAddress, nftContractABI, wallet);
 
             try {
-                const data = nftContract.interface.encodeFunctionData('mint', [10]);
-
+                const data = getContractData(nftContract, nftContractAddress, address);
                 const nonce = await provider.getTransactionCount(address);
                 const gasPrice = await provider.getGasPrice()
                 const maxPriority = parseInt(ethers.utils.formatUnits(gasPrice.toString(), "gwei"));
@@ -30,7 +49,7 @@ async function mint(wallet) {
                     to: nftContractAddress,
                     data: data,
                     nonce: nonce,
-                    value: ethers.utils.parseEther(value),
+                    value: value.toString(),
                     gasLimit: 120000,
                     maxFeePerGas: ethers.utils.parseUnits(maxPriority.toString(), "gwei"),
                     maxPriorityFeePerGas: ethers.utils.parseUnits("0.1", "gwei"),
