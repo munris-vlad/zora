@@ -19,7 +19,8 @@ async function getMintfunPoints(wallet) {
         totalPoints += response.data.points;
         let points = response.data.points;
         let streak = response.data.streak;
-        let line = `${wallet}: ${points} | Streak: ${streak}`;
+        let expiry = new Date(response.data.streakExpiry).toLocaleString();
+        let line = `${wallet}: ${points} | Streak: ${streak}, истекает: ${expiry}`;
         console.log(line);
         writeLineToFile('results.txt', line);
     }).catch(function (error) {
