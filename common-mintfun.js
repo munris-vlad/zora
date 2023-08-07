@@ -105,6 +105,16 @@ export function getContractData(nftContract, nftContractAddress, address = null)
         case "0x90fb81ca2fec713c9c6b4b2694eded668b85d5ed":
             data = nftContract.interface.encodeFunctionData('mint', [1]);
             break;
+        case "0xcf3681688cf41f14952024cb1ff21f8033a0d8a1":
+            data = nftContract.interface.encodeFunctionData('freeMint');
+            break;
+        case "0xfA97094bE18130CD651Aa9e054B8b7b626434000":
+            data = nftContract.interface.encodeFunctionData('freeMint');
+            break;
+        case "0xCc804DFA58Bf38fc32F45C6214c7130b324637d4":
+            data = nftContract.interface.encodeFunctionData('mintAmount', [3]);
+            break;
+
     }
 
     return data;
