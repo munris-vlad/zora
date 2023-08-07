@@ -21,9 +21,9 @@ export async function checkPass(address) {
     }
 }
 
-export async function isMinted(address, contract) {
+export async function isMinted(address, contract, network) {
     try {
-        const response = await axios.get(mintCheckApiUrl+`1:${contract}/minted`, {
+        const response = await axios.get(mintCheckApiUrl+`${network}:${contract}/minted`, {
             params: {
                 address: address
             }
@@ -101,6 +101,9 @@ export function getContractData(nftContract, nftContractAddress, address = null)
                 address,
                 1
             ]);
+            break;
+        case "0x90fb81ca2fec713c9c6b4b2694eded668b85d5ed":
+            data = nftContract.interface.encodeFunctionData('mint', [1]);
             break;
     }
 

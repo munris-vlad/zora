@@ -16,15 +16,21 @@ if (args[0]) {
 
 switch (network) {
     case 'eth':
-        contracts = JSON.parse(fs.readFileSync("./contracts-eth.json"));
+        contracts = JSON.parse(fs.readFileSync("./contracts/contracts-eth.json"));
         provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
         networkId = 1;
         break;
 
     case 'optimism':
-        contracts = JSON.parse(fs.readFileSync("./contracts-optimism.json"));
+        contracts = JSON.parse(fs.readFileSync("./contracts/contracts-optimism.json"));
         provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/optimism");
         networkId = 10;
+        break;
+
+    case 'base':
+        contracts = JSON.parse(fs.readFileSync("./contracts/contracts-base.json"));
+        provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/base");
+        networkId = 8453;
         break;
 }
 
@@ -33,7 +39,7 @@ const maxGas = 50;
 async function mint(wallet) {
     const address = await wallet.getAddress();
     for (const nftContractAddress in contracts) {
-        if (!await isMinted(address, networkId, nftContractAddress)) {
+        if (!await isMinted(address, nftContractAddress, networkId)) {
             const nftContractABI = JSON.parse(fs.readFileSync(`./contracts/${nftContractAddress}.json`));
             const value = contracts[nftContractAddress];
             const nftContract = new ethers.Contract(nftContractAddress, nftContractABI, wallet);
@@ -62,6 +68,11 @@ async function mint(wallet) {
                         tx.maxFeePerGas = ethers.utils.parseUnits("1", "gwei");
                         tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.1", "gwei");
                         tx.gasLimit = 500000;
+                        break;
+                    case 'base':
+                        tx.maxFeePerGas = ethers.utils.parseUnits("1", "gwei");
+                        tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.4", "gwei");
+                        tx.gasLimit = 200000;
                         break;
                 }
 

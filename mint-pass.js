@@ -7,7 +7,7 @@ import randomUseragent from "random-useragent"
 
 const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth");
 const fundropContractAddress = '0x0000000000664ceffed39244a8312bD895470803';
-const fundropContractABI = JSON.parse(fs.readFileSync("./abi-fundrop.json"));
+const fundropContractABI = JSON.parse(fs.readFileSync("./contracts/abi-fundrop.json"));
 const referrer = '0x2300f68064BfaafA381cd36f2695CDfEAAc09231';
 const maxGas = 15;
 
