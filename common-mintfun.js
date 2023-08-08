@@ -114,7 +114,18 @@ export function getContractData(nftContract, nftContractAddress, address = null)
         case "0xCc804DFA58Bf38fc32F45C6214c7130b324637d4":
             data = nftContract.interface.encodeFunctionData('mintAmount', [3]);
             break;
-
+        case "0x3f1201a68b513049f0f6e182f742a0dce970d8cd":
+            data = nftContract.interface.encodeFunctionData('purchase', [1]);
+            break;
+        case "0x81d226fb36ca785583e79e84312335d0e166d59b":
+            data = nftContract.interface.encodeFunctionData('purchase', [1]);
+            break;
+        case "0xa545f209fb4997bccdf991d21be1eccd714569fb":
+            data = nftContract.interface.encodeFunctionData('purchase', [1]);
+            break;
+        case "0x48378bbf8948ffe4f32fa58646b7d7fe624de922":
+            data = nftContract.interface.encodeFunctionData('purchase', [1]);
+            break;
     }
 
     return data;

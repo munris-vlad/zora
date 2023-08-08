@@ -32,9 +32,15 @@ switch (network) {
         provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/base");
         networkId = 8453;
         break;
+
+    case 'zora':
+        contracts = JSON.parse(fs.readFileSync("./contracts/contracts-zora.json"));
+        provider = new ethers.providers.JsonRpcProvider("https://rpc.zora.co");
+        networkId = 7777777;
+        break;
 }
 
-const maxGas = 50;
+const maxGas = 20;
 
 async function mint(wallet) {
     const address = await wallet.getAddress();
@@ -73,6 +79,12 @@ async function mint(wallet) {
                         tx.maxFeePerGas = ethers.utils.parseUnits("1", "gwei");
                         tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.4", "gwei");
                         tx.gasLimit = 200000;
+                        break;
+                    case 'zora':
+                        tx.maxFeePerGas = ethers.utils.parseUnits("0.005", "gwei");
+                        tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.005", "gwei");
+                        tx.gasLimit = 200000;
+                        tx.value = ethers.utils.parseUnits(value.toString(), 'ether');;
                         break;
                 }
 
