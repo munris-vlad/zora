@@ -4,7 +4,6 @@ import axios from "axios";
 import * as ethers from "ethers";
 import {checkPass, isMinted, submitTx, waitForGas, getContractData} from "./common-mintfun.js";
 
-let contracts;
 const args = process.argv.slice(2);
 let count = 1;
 let networkId;
@@ -17,9 +16,14 @@ if (args[0]) {
 provider = new ethers.providers.JsonRpcProvider("https://rpc.zora.co");
 networkId = 7777777;
 
+let contracts = [
+    '0x53cb0B849491590CaB2cc44AF8c20e68e21fc36D',
+    '0xDcFB6cB9512E50dC54160cB98E5a00B3383F6A53'
+]
+
 async function mint(wallet) {
     const address = await wallet.getAddress();
-    const nftContractAddress = '0x53cb0B849491590CaB2cc44AF8c20e68e21fc36D';
+    const nftContractAddress = contracts[random(0, contracts.length-1)];
     const nftContractABI = JSON.parse(fs.readFileSync(`./contracts/${nftContractAddress}.json`));
     const value = 0;
     const nftContract = new ethers.Contract(nftContractAddress, nftContractABI, wallet);
@@ -39,7 +43,7 @@ async function mint(wallet) {
 
         tx.maxFeePerGas = ethers.utils.parseUnits("0.0002", "gwei");
         tx.maxPriorityFeePerGas = ethers.utils.parseUnits("0.0002", "gwei");
-        tx.gasLimit = 200000;
+        tx.gasLimit = 2000000;
         tx.value = ethers.utils.parseUnits(value.toString(), 'ether');
 
         const signedTx = await wallet.signTransaction(tx);

@@ -134,7 +134,10 @@ export function getContractData(nftContract, nftContractAddress, address = null)
             break;
         case "0x012caeb558dffc053a6a092835a1e7f5c8eeba8b":
             data = nftContract.interface.encodeFunctionData('mint', [10]);
-
+            break;
+        case "0xDcFB6cB9512E50dC54160cB98E5a00B3383F6A53":
+            data = nftContract.interface.encodeFunctionData('mint', [100]);
+            break;
     }
 
     return data;
