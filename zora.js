@@ -18,12 +18,20 @@ networkId = 7777777;
 
 let contracts = [
     '0x53cb0B849491590CaB2cc44AF8c20e68e21fc36D',
-    '0xDcFB6cB9512E50dC54160cB98E5a00B3383F6A53'
+    '0x266b7E8Df0368Dd4006bE5469DD4EE13EA53d3a4',
+    '0xDcFB6cB9512E50dC54160cB98E5a00B3383F6A53',
+    '0x4de73D198598C3B4942E95657a12cBc399E4aDB5',
+    '0xCc4FF6BB314055846e46490B966745E869546B4a',
+    '0x12B93dA6865B035AE7151067C8d264Af2ae4be8E',
+    '0x9eAE90902a68584E93a83D7638D3a95ac67FC446',
+    '0x4073a52A3fc328D489534Ab908347eC1FcB18f7f',
+    '0xA85B9F9154db5bd9C0b7F869bC910a98ba1b7A87',
+    '0xC47ADb3e5dC59FC3B41d92205ABa356830b44a93',
+    '0xca5F4088c11B51c5D2B9FE5e5Bc11F1aff2C4dA7'
 ]
 
-async function mint(wallet) {
+async function mint(wallet, nftContractAddress) {
     const address = await wallet.getAddress();
-    const nftContractAddress = contracts[random(0, contracts.length-1)];
     const nftContractABI = JSON.parse(fs.readFileSync(`./contracts/${nftContractAddress}.json`));
     const value = 0;
     const nftContract = new ethers.Contract(nftContractAddress, nftContractABI, wallet);
@@ -64,8 +72,9 @@ for (let privateKey of privateKeys) {
     console.log(`${address}: Работаем с кошельком`);
 
     for (let i = 0; i < count; i++) {
+        let nftContractAddress = contracts[random(0, contracts.length-1)];
         console.log(`Минт ${i+1}/${count}`);
-        await mint(wallet)
+        await mint(wallet, nftContractAddress)
     }
 
     await sleep(1.5 * 1000);
