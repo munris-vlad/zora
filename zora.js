@@ -8,9 +8,13 @@ const args = process.argv.slice(2);
 let count = 1;
 let networkId;
 let provider;
+let countFrom = null, countTo = null
 
 if (args[0]) {
    count = args[0];
+   if (count.includes('-')) {
+       [countFrom, countTo] = count.split('-')
+   }
 }
 
 provider = new ethers.providers.JsonRpcProvider("https://rpc.zora.co");
@@ -75,9 +79,11 @@ for (let privateKey of privateKeys) {
     const address = await wallet.getAddress();
     console.log(`${address}: Работаем с кошельком`);
 
-    for (let i = 0; i < count; i++) {
+    const iteration = countFrom !== null ? random(countFrom, countTo) : count
+
+    for (let i = 0; i < iteration; i++) {
         let nftContractAddress = contracts[random(0, contracts.length-1)];
-        console.log(`Минт ${i+1}/${count}`);
+        console.log(`Минт ${i+1}/${iteration}`);
         await mint(wallet, nftContractAddress)
     }
 
