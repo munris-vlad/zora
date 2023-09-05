@@ -130,5 +130,5 @@ for (let privateKey of privateKeys) {
         await mint(wallet, nftContractAddress, value)
     }
 
-    await sleep(random(30, 38) * 1000)
+    await sleep(random(30, 100) * 1000)
 }
