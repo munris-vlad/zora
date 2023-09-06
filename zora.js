@@ -91,7 +91,7 @@ for (let privateKey of privateKeys) {
 
     const iteration = countFrom !== null ? random(countFrom, countTo) : count
 
-    if (type !== 'free') {
+    if (type !== 'free' && type !== 'holograph') {
         const balance = Number(await wallet.getBalance())
         if (balance < 999000000000000) {
             console.log(`${address}: Баланс недостаточный для платных минтов, переключаемся в Free`)
@@ -120,6 +120,10 @@ for (let privateKey of privateKeys) {
                 nftContractAddress = freeContracts[random(0, freeContracts.length-1)]
                 console.log(`${address}: FREE Mint ${i+1}/${iteration}`)
             }
+        } else if (type === 'holograph') {
+            nftContractAddress = '0x02e591665b785cDa7404e005C323c262667d6F54'
+            value = 0.000042
+            console.log(`${address}: Holograph mint`)
         }
 
         if (nftContractAddress === '' || !nftContractAddress) {
