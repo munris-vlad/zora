@@ -63,6 +63,7 @@ async function mint(wallet, nftContractAddress, value) {
         const txResponse = await provider.sendTransaction(signedTx)
         await submitTx(address, txResponse.hash, networkId)
         console.log(`${address}: ${nftContractAddress} успешно заминчен: https://explorer.zora.energy/tx/${ txResponse.hash }`)
+        await sleep(random(30, 100) * 1000)
     } catch (e) {
         console.log(e)
     }
@@ -133,6 +134,4 @@ for (let privateKey of privateKeys) {
 
         await mint(wallet, nftContractAddress, value)
     }
-
-    await sleep(random(30, 100) * 1000)
 }
