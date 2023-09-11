@@ -29,11 +29,25 @@ export function writeLineToFile(filePath, line) {
     }
 }
 
+export function getAmount(minAmount, maxAmount) {
+    const randomNumber = Math.random() * (maxAmount - minAmount) + minAmount
+
+    if (isNaN(randomNumber)) {
+        throw new Error("Invalid calculation result: Not a number.")
+    }
+
+    return parseFloat(randomNumber).toFixed(18)
+}
+
 export function getRandomFreeContract() {
     const keys = Object.keys(contracts);
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     return [randomKey, contracts[randomKey]];
 }
+
+
+export const bridgeContractAddress = '0x1a0ad011913a150f69f6a19df447a0cfd9551054'
+export const bridgeContractABI = JSON.parse(fs.readFileSync(`./contracts/official-bridge.json`))
 
 export const freeContracts = [
     '0x53cb0B849491590CaB2cc44AF8c20e68e21fc36D',
