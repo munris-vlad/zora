@@ -73,15 +73,15 @@ export const paidContracts = [
         value: 0.000777
     },
     {
-        address: '0x09dD68c87020055a19733a6CcD7bfc7e7DfB3483',
-        value: 0.000777
-    },
-    {
         address: '0x350cd7e18fca65e3475385e03c9d838085051851',
         value: 0.000777
     },
     {
         address: '0x6fc5dbd33ab54f3e20ae9937109f01c91d8cf202',
+        value: 0.000777
+    },
+    {
+        address: '0xbed30c572a0f0242946351fccb4eacb7a94da79c',
         value: 0.000777
     }
 ]
