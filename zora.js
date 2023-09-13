@@ -34,7 +34,6 @@ networkId = 7777777
 async function mint(wallet, nftContractAddress, value) {
     const address = await wallet.getAddress()
     let nftContractABI
-
     if (freeContracts.includes(nftContractAddress)) {
         nftContractABI = JSON.parse(fs.readFileSync(`./contracts/zora-free.json`))
     } else {
@@ -122,7 +121,7 @@ for (let privateKey of privateKeys) {
                 console.log(`${address}: FREE Mint ${i+1}/${iteration}`)
             }
         } else if (type === 'holograph') {
-            nftContractAddress = '0x02e591665b785cDa7404e005C323c262667d6F54'
+            nftContractAddress = '0x052790f7f5b15f9a2fa684fd3ecd657e3cd9029c'
             value = 0.000042
             console.log(`${address}: Holograph mint`)
         }

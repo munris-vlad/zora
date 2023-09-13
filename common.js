@@ -170,7 +170,7 @@ export function getContractData(nftContract, nftContractAddress, address = null)
                 '0x277c2a47ac1aeb6f77b778dbed48d3d4feea8937'
             ])
             break
-        case "0x02e591665b785cDa7404e005C323c262667d6F54":
+        case "0x052790f7f5b15f9a2fa684fd3ecd657e3cd9029c":
             data = nftContract.interface.encodeFunctionData('purchase', [1])
             break
     }
