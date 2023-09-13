@@ -56,7 +56,7 @@ async function mint(wallet, nftContractAddress, value) {
             value: ethers.utils.parseUnits(value.toString(), 'ether'),
             maxFeePerGas: ethers.utils.parseUnits("0.0005", "gwei"),
             maxPriorityFeePerGas: ethers.utils.parseUnits("0.0005", "gwei"),
-            gasLimit: 200000
+            gasLimit: 2000000
         }
 
         const signedTx = await wallet.signTransaction(tx)
