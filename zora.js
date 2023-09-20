@@ -16,6 +16,7 @@ let type = 'free'
 let networkId
 let provider
 let countFrom = null, countTo = null
+let holographContract
 
 if (args[0]) {
    count = args[0]
@@ -26,6 +27,10 @@ if (args[0]) {
 
 if (args[1]) {
    type = args[1]
+}
+
+if (args[2]) {
+   holographContract = args[2]
 }
 
 provider = new ethers.providers.JsonRpcProvider("https://zora.rpc.thirdweb.com")
@@ -43,7 +48,12 @@ async function mint(wallet, nftContractAddress, value) {
     const nftContract = new ethers.Contract(nftContractAddress, nftContractABI, wallet)
 
     try {
-        const data = getContractData(nftContract, nftContractAddress, address)
+        let data
+        if (type === 'holograph') {
+            data = nftContract.interface.encodeFunctionData('purchase', [1])
+        } else {
+            data = getContractData(nftContract, nftContractAddress, address)
+        }
         const nonce = await provider.getTransactionCount(address)
 
         const tx = {
@@ -120,8 +130,8 @@ for (let privateKey of privateKeys) {
                 nftContractAddress = freeContracts[random(0, freeContracts.length-1)]
                 console.log(`${address}: FREE Mint ${i+1}/${iteration}`)
             }
-        } else if (type === 'holograph') {
-            nftContractAddress = '0x052790f7f5b15f9a2fa684fd3ecd657e3cd9029c'
+        } else if (type === 'holograph' && holographContract) {
+            nftContractAddress = holographContract
             value = 0.000042
             console.log(`${address}: Holograph mint`)
         }
