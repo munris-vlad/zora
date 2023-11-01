@@ -5,12 +5,14 @@ import {
     readWallets,
     getContractData,
     freeContracts,
-    paidContracts
+    paidContracts,
+    shuffle
 } from './common.js'
 import * as ethers from "ethers"
 import {isMinted, submitTx} from "./common-mintfun.js"
 
 const args = process.argv.slice(2)
+let shuffleWallets = true
 let count = 1
 let type = 'free'
 let networkId
@@ -92,6 +94,8 @@ async function definePaidContract(wallet) {
 }
 
 const privateKeys = readWallets('private_keys.txt')
+
+if (shuffleWallets) shuffle(privateKeys)
 
 for (let privateKey of privateKeys) {
     const wallet = new ethers.Wallet(privateKey, provider)

@@ -20,6 +20,17 @@ export function readWallets(filePath) {
     }
 }
 
+export function shuffle(array) {
+    let currentIndex = array.length,  randomIndex
+    while (currentIndex > 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+    }
+
+    return array
+}
+
 
 export function writeLineToFile(filePath, line) {
     try {
@@ -170,7 +181,7 @@ export function getContractData(nftContract, nftContractAddress, address = null)
                 '0x277c2a47ac1aeb6f77b778dbed48d3d4feea8937'
             ])
             break
-        case "0x052790f7f5b15f9a2fa684fd3ecd657e3cd9029c":
+        case "0x6658C6676828Cf1cb2e9C6B5399913E4d2f449Cb":
             data = nftContract.interface.encodeFunctionData('purchase', [1])
             break
     }
