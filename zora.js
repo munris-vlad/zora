@@ -13,6 +13,7 @@ import {isMinted, submitTx} from "./common-mintfun.js"
 
 const args = process.argv.slice(2)
 let shuffleWallets = true
+let maxGas = 20
 let count = 1
 let type = 'free'
 let networkId
@@ -36,7 +37,20 @@ if (args[2]) {
 }
 
 provider = new ethers.providers.JsonRpcProvider("https://zora.rpc.thirdweb.com")
+const ethprovider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth")
 networkId = 7777777
+
+async function waitForGas(maxGas) {
+    while (true) {
+        const gasPrice = await ethprovider.getGasPrice()
+        const currentGas = parseInt(ethers.utils.formatUnits(gasPrice.toString(), "gwei"))
+        if (currentGas <= maxGas) {
+            return currentGas
+        }
+        console.log(`Ждем газ ${maxGas}. Текущий газ: ${currentGas}`)
+        await new Promise(resolve => setTimeout(resolve, 10000));
+    }
+}
 
 async function mint(wallet, nftContractAddress, value) {
     const address = await wallet.getAddress()
@@ -102,6 +116,8 @@ for (let privateKey of privateKeys) {
     const address = await wallet.getAddress()
     console.log(`${address}: Работаем с кошельком`)
     let nftContractAddress = '', value = 0
+
+    await waitForGas(maxGas)
 
     const iteration = countFrom !== null ? random(countFrom, countTo) : count
 

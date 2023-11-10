@@ -1,3 +1,4 @@
 /node_modules/
 .env
 .idea
+private_keys.txt
